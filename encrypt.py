@@ -1,6 +1,7 @@
 import os
+import subprocess
+import sys
 
-print("Welcome into this programme ")
 
 #Chose the file 
 def choose_file():
@@ -12,14 +13,41 @@ def choose_file():
         print(">",file)
 
     while True :
+
         selec_file=str(input()).strip()
+
         if selec_file in dir_files:
             return selec_file
         else:
             print(f"{selec_file} doesn't exist or not in the current directory")
             print("try again")
+
             for file in dir_files:
                 print(">",file)
 
+#Check the command
+def command_exists(command):
+    result = subprocess.run(['which', command], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return result.returncode == 0
 
-print(choose_file())
+#check openssl
+def check_openSSL():
+    if command_exists("openssl"):
+        return True
+    else:
+        print("openssl is not installed!\n \
+Please install it and run this programm again.")
+        sys.exit(1) 
+
+#Main
+def main():
+    print("Welcome into this programm ")
+
+    the_file=choose_file()
+
+    if check_openSSL():
+        print("nice")
+
+
+
+main() 
