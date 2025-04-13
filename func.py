@@ -2,6 +2,11 @@ import os
 import subprocess
 import sys
 
+class cipher:
+    """Model of cipher"""
+    def __init__(self, cipher_name) -> None:
+       self.name=cipher_name
+
 
 #Chose the file 
 def choose_file():
@@ -19,40 +24,57 @@ def choose_file():
         if selec_file in dir_files:
             return selec_file
         else:
-            print(f"{selec_file} doesn't exist or not in the current directory")
+            print(f"{selec_file}"
+                  "doesn't exist"
+                  "or not in the current directory")
             print("try again")
 
             for file in dir_files:
                 print(">",file)
 
+
 #Check the command
 def command_exists(command):
-    result = subprocess.run(['which', command], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    result = subprocess.run(
+        ['which', command],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
     return result.returncode == 0
+
 
 #check openssl
 def check_openSSL():
     if command_exists("openssl"):
         return True
     else:
-        print("openssl is not installed!\n \
-Please install it and run this programm again.")
+        print("openssl is not installed!\n",\
+              "Please install it and run this programm again.")
         sys.exit(1) 
 
+
 def encryption_method():
-    output=subprocess.run(['openssl','enc','-ciphers'],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+
+    output=subprocess.run(
+        ['openssl','enc','-ciphers'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
     ciphers=output.stdout.split()
+
     for _ in range(2):
         del ciphers[0]
+    
+    for ciph in ciphers:
+        print(">",ciph)
+    print("Enter one of the cipher above"
+          "(by default cipher -aes-256-cbc used): ")
+    cipher_input=str(input()).strip()
+
+    if (cipher_input=="" 
+            or cipher_input=="-aes-256-cbc"):
+        # cipher="-aes-256-cbc"
+        # aes_key=os.urandom(32)
+        # aes_iv=os.urandom(16)
     return ciphers
-
-#Main
-def main():
-    print("Welcome into this programm ")
-
-    the_file=choose_file()
-
-    if check_openSSL():
-
-
-
