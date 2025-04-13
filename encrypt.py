@@ -39,6 +39,13 @@ def check_openSSL():
 Please install it and run this programm again.")
         sys.exit(1) 
 
+def encryption_method():
+    output=subprocess.run(['openssl','enc','-ciphers'],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+    ciphers=output.stdout.split()
+    for _ in range(2):
+        del ciphers[0]
+    return ciphers
+
 #Main
 def main():
     print("Welcome into this programm ")
@@ -46,8 +53,6 @@ def main():
     the_file=choose_file()
 
     if check_openSSL():
-        print("nice")
 
 
 
-main() 
