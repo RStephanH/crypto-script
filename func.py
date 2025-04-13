@@ -2,10 +2,6 @@ import os
 import subprocess
 import sys
 
-class cipher:
-    """Model of cipher"""
-    def __init__(self, cipher_name) -> None:
-       self.name=cipher_name
 
 
 #Chose the file 
@@ -72,9 +68,6 @@ def encryption_method():
           "(by default cipher -aes-256-cbc used): ")
     cipher_input=str(input()).strip()
 
-    if (cipher_input=="" 
-            or cipher_input=="-aes-256-cbc"):
-        # cipher="-aes-256-cbc"
-        # aes_key=os.urandom(32)
-        # aes_iv=os.urandom(16)
-    return ciphers
+    if cipher_input=="":
+        cipher_input="aes-256-cbc"
+    return cipher_input
