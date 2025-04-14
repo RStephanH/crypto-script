@@ -2,7 +2,7 @@ import func
 import os
 import subprocess
 
-class Cipher:
+class Cipher():
     """Model of cipher"""
     def __init__(self, cipher_name,passphrase=None):
         self.name=cipher_name
@@ -17,7 +17,7 @@ class Cipher:
             }
 
 
-class Encryption:
+class Encryption():
     """Model of encryption """
     def __init__(self):
         self.concern_file=func.choose_file()
@@ -69,5 +69,3 @@ class Encryption:
         pass
 
 
-f=Encryption()
-f.encrypt()
