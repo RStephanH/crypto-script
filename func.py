@@ -1,6 +1,8 @@
+from getpass import getpass
 import os
 import subprocess
 import sys
+
 
 
 
@@ -70,4 +72,23 @@ def encryption_method():
 
     if cipher_input=="":
         cipher_input="-aes-256-cbc"
-    return cipher_input
+    confirm=str(input("Do you want to use passphrase?(y/n)"))
+
+    if confirm.lower()=='y':
+
+        while True:
+
+            input_passphrase1=getpass("Enter the passphrase: ")
+            input_passphrase2=getpass("Re-enter the passphrase: ")
+
+            if input_passphrase1 == input_passphrase2 :
+                print("Passphrase match! Success.")
+                input_passphrase=input_passphrase2
+                break
+            else:
+                print("Passwords don't match. Try again.\n")
+
+    else:
+        input_passphrase=None
+    
+    return cipher_input,input_passphrase
