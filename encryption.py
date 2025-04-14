@@ -29,11 +29,19 @@ class Encryption:
 
         #Create the file for the key and initial vector
         try:
-            with open(self.concern_file+".key",'w') as enc_key:
-                enc_key.write(self.cipher.option["key"])
+            with open(self.concern_file+".key",'wb') as enc_key:
+                enc_key.write(self.cipher.option['key'])
             print("Key created")
         except IOError as e:
             print(f"Error saving the key: {e}")
+
+        #Create the file for the initial vector
+        try:
+            with open(self.concern_file+".iv",'wb') as enc_iv:
+                enc_iv.write(self.cipher.option['iv'])
+            print("IV created")
+        except IOError as e:
+            print(f"Error saving the IV: {e}")
         
         # subprocess.run(
         #     [
@@ -70,6 +78,4 @@ class Encryption:
 
 
 f=Encryption()
-# f.te()
-print(f.cipher.option['key'].hex())
-# f.encrypt()
+f.encrypt()
