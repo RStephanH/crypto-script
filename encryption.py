@@ -21,10 +21,6 @@ class Encryption:
         self.concern_file=func.choose_file()
         self.cipher=Cipher(str(func.encryption_method()))
     
-    def te(self):
-        if "key" in self.cipher.option:
-            print("dictionaries works fine")
-
     def encrypt(self):
 
         #Create the file for the key and initial vector
