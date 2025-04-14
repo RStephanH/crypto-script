@@ -69,5 +69,5 @@ def encryption_method():
     cipher_input=str(input()).strip()
 
     if cipher_input=="":
-        cipher_input="aes-256-cbc"
+        cipher_input="-aes-256-cbc"
     return cipher_input
