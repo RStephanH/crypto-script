@@ -74,15 +74,6 @@ def encryption_method():
     ciphers_menu=TerminalMenu(ciphers,title="Choose the algorithm")
     cipher_index=ciphers_menu.show()
     cipher=ciphers[cipher_index]
-
-    # for ciph in ciphers:
-    #     print(">",ciph)
-    # print("Enter one of the cipher above"
-    #       "(by default cipher -aes-256-cbc used): ")
-    # cipher_input=str(input()).strip()
-    #
-    # if cipher_input=="":
-    #     cipher_input="-aes-256-cbc"
     confirm=str(input("Do you want to use passphrase?(y/n)"))
 
     if confirm.lower()=='y':
@@ -108,11 +99,13 @@ def choose_action():
     cmd=["cowsay","-f","tux",action_msg]
     subprocess.run(cmd,check=True)
 
-    actions=["Encrypt","Decrypt"]
+    actions=["Encrypt","Decrypt","Cancel"]
     action_menu=TerminalMenu(actions)
     action_index=action_menu.show()
     action=actions[action_index]
 
+    if action.lower()=="cancel":
+        exit(1)
     types_action=["Symmetric","Asymmetric"]
     type_menu=TerminalMenu(types_action,title="Which type of encryption ?")
     type_index=type_menu.show()
