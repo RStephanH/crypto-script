@@ -1,34 +1,28 @@
 from getpass import getpass
+from simple_term_menu import TerminalMenu
+from sys import exit
 import os
 import subprocess
-import sys
 
 
 
 
 #Chose the file 
 def choose_file():
-    print("Wich file will be encrypted :")
-
-    dir_files=os.listdir()
+    message="Choose the file:"
     
-    for file in dir_files:
-        print(">",file)
+     # Get list of files in the current directory
+    all_entries = os.listdir('.')
+    files = []
 
-    while True :
+    for entry in all_entries:
+        if os.path.isfile(entry):#verify if it's file
+            files.append(entry)
+ 
+    terminal_menu = TerminalMenu(files, title=message)
+    menu_entry_index = terminal_menu.show()
+    return files[menu_entry_index]
 
-        selec_file=str(input()).strip()
-
-        if selec_file in dir_files:
-            return selec_file
-        else:
-            print(f"{selec_file}"
-                  "doesn't exist"
-                  "or not in the current directory")
-            print("try again")
-
-            for file in dir_files:
-                print(">",file)
 
 
 #Check the command
@@ -48,7 +42,21 @@ def check_openSSL():
     else:
         print("openssl is not installed!\n",\
               "Please install it and run this programm again.")
-        sys.exit(1) 
+        exit(1) 
+
+def password_generator():
+    while True:
+
+        input_passphrase1=getpass("Enter the passphrase: ")
+        input_passphrase2=getpass("Re-enter the passphrase: ")
+
+        if input_passphrase1 == input_passphrase2 :
+            print("Passphrase match! Success.")
+            input_passphrase=input_passphrase2
+            break
+        else:
+            print("Passwords don't match. Try again.\n")
+    return input_passphrase
 
 
 def encryption_method():
@@ -76,19 +84,20 @@ def encryption_method():
 
     if confirm.lower()=='y':
 
-        while True:
-
-            input_passphrase1=getpass("Enter the passphrase: ")
-            input_passphrase2=getpass("Re-enter the passphrase: ")
-
-            if input_passphrase1 == input_passphrase2 :
-                print("Passphrase match! Success.")
-                input_passphrase=input_passphrase2
-                break
-            else:
-                print("Passwords don't match. Try again.\n")
+        # while True:
+        #
+        #     input_passphrase1=getpass("Enter the passphrase: ")
+        #     input_passphrase2=getpass("Re-enter the passphrase: ")
+        #
+        #     if input_passphrase1 == input_passphrase2 :
+        #         print("Passphrase match! Success.")
+        #         input_passphrase=input_passphrase2
+        #         break
+        #     else:
+        #         print("Passwords don't match. Try again.\n")
+        password=password_generator()
 
     else:
-        input_passphrase=None
+        password=None
     
-    return cipher_input,input_passphrase
+    return cipher_input,password

@@ -1,3 +1,4 @@
+from sys import exit
 import func
 import os
 import subprocess
@@ -47,9 +48,9 @@ class Encryption():
             hex_iv=self.cipher.option['iv'].hex()
             print(f"hex_key: {hex_key}\n"
                 f"hex_iv: {hex_iv}")
-        
-            subprocess.run(
-                [
+
+            #Define the encryption command
+            cmd=[
                     "openssl",
                     "enc",
                     self.cipher.name,
@@ -63,8 +64,29 @@ class Encryption():
                     "-iv",
                     hex_iv
                 ]
-            )
 
+        elif self.cipher.passphrase is not None:
+            cmd=[
+                'openssl',
+                'enc',
+                '-aes-256-cbc',
+                '-salt',
+                '-pbkdf2',
+                '-iter',
+                '100000',
+                '-in',
+                self.concern_file,
+                '-out',
+                self.concern_file+".enc",
+                '-k',
+                self.cipher.passphrase
+            ]
+        else:
+            print("Error with the passphrase")
+            exit(1)
+        subprocess.run(cmd,check=True)
+
+        
     def decrypt(self):
         pass
 
