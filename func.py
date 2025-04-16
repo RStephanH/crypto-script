@@ -1,10 +1,9 @@
 from getpass import getpass
+from re import sub
 from simple_term_menu import TerminalMenu
 from sys import exit
 import os
 import subprocess
-
-
 
 
 #Chose the file 
@@ -22,7 +21,6 @@ def choose_file():
     terminal_menu = TerminalMenu(files, title=message)
     menu_entry_index = terminal_menu.show()
     return files[menu_entry_index]
-
 
 
 #Check the command
@@ -43,6 +41,7 @@ def check_openSSL():
         print("openssl is not installed!\n",\
               "Please install it and run this programm again.")
         exit(1) 
+
 
 def password_generator():
     while True:
@@ -72,32 +71,53 @@ def encryption_method():
     for _ in range(2):
         del ciphers[0]
     
-    for ciph in ciphers:
-        print(">",ciph)
-    print("Enter one of the cipher above"
-          "(by default cipher -aes-256-cbc used): ")
-    cipher_input=str(input()).strip()
+    ciphers_menu=TerminalMenu(ciphers,title="Choose the algorithm")
+    cipher_index=ciphers_menu.show()
+    cipher=ciphers[cipher_index]
 
-    if cipher_input=="":
-        cipher_input="-aes-256-cbc"
+    # for ciph in ciphers:
+    #     print(">",ciph)
+    # print("Enter one of the cipher above"
+    #       "(by default cipher -aes-256-cbc used): ")
+    # cipher_input=str(input()).strip()
+    #
+    # if cipher_input=="":
+    #     cipher_input="-aes-256-cbc"
     confirm=str(input("Do you want to use passphrase?(y/n)"))
 
     if confirm.lower()=='y':
-
-        # while True:
-        #
-        #     input_passphrase1=getpass("Enter the passphrase: ")
-        #     input_passphrase2=getpass("Re-enter the passphrase: ")
-        #
-        #     if input_passphrase1 == input_passphrase2 :
-        #         print("Passphrase match! Success.")
-        #         input_passphrase=input_passphrase2
-        #         break
-        #     else:
-        #         print("Passwords don't match. Try again.\n")
         password=password_generator()
-
     else:
         password=None
     
-    return cipher_input,password
+    return cipher,password
+
+def welcome(msg):
+    
+    subprocess.run(
+        [
+            "figlet",
+            msg
+        ],
+        check=True
+    )
+
+def choose_action():
+    action_msg="What do you want to do"
+
+    cmd=["cowsay","-f","tux",action_msg]
+    subprocess.run(cmd,check=True)
+
+    actions=["Encrypt","Decrypt"]
+    action_menu=TerminalMenu(actions)
+    action_index=action_menu.show()
+    action=actions[action_index]
+
+    types_action=["Symmetric","Asymmetric"]
+    type_menu=TerminalMenu(types_action,title="Which type of encryption ?")
+    type_index=type_menu.show()
+    type_action=types_action[type_index]
+
+    return action, type_action
+
+

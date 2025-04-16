@@ -9,14 +9,14 @@ class Cipher():
         self.name=cipher_name
         self.passphrase=passphrase
 
-        if (self.name == "-aes-256-cbc"
-            and self.passphrase== None):
-            #Generate the key and the initial vector
-            self.option={
-                'key':os.urandom(32),
-                'iv':os.urandom(16)
-            }
-
+        # if (self.name == "-aes-256-cbc"
+        #     and self.passphrase== None):
+        #     #Generate the key and the initial vector
+        #     self.option={
+        #         'key':os.urandom(32),
+        #         'iv':os.urandom(16)
+        #     }
+        #
 
 class Encryption():
     """Model of encryption """
@@ -26,11 +26,18 @@ class Encryption():
     
     def encrypt(self):
 
+        if (self.cipher.name == "-aes-256-cbc"
+            and self.cipher.passphrase== None):
+            #Generate the key and the initial vector
+            self.key=os.urandom(32)
+            self.iv=os.urandom(16)
+
+
         #Create the file for the key and initial vector
         if self.cipher.passphrase==None:
             try:
                 with open(self.concern_file+".key",'wb') as enc_key:
-                    enc_key.write(self.cipher.option['key'])
+                    enc_key.write(self.key)
                 print("Key created")
             except IOError as e:
                 print(f"Error saving the key: {e}")
@@ -38,14 +45,14 @@ class Encryption():
             #Create the file for the initial vector
             try:
                 with open(self.concern_file+".iv",'wb') as enc_iv:
-                    enc_iv.write(self.cipher.option['iv'])
+                    enc_iv.write(self.iv)
                 print("IV created")
             except IOError as e:
                 print(f"Error saving the IV: {e}")
 
             #Translate the binary format into hex
-            hex_key=self.cipher.option['key'].hex()
-            hex_iv=self.cipher.option['iv'].hex()
+            hex_key=self.key.hex()
+            hex_iv=self.iv.hex()
             print(f"hex_key: {hex_key}\n"
                 f"hex_iv: {hex_iv}")
 
@@ -87,7 +94,8 @@ class Encryption():
         subprocess.run(cmd,check=True)
 
         
-    def decrypt(self):
+    def decrypt(self,key=None,iv=None,passphrase=None):
+
         pass
 
 
