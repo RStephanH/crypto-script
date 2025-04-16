@@ -1,8 +1,8 @@
 from getpass import getpass
-from re import sub
 from simple_term_menu import TerminalMenu
 from sys import exit
 import os
+import re
 import subprocess
 
 
@@ -58,7 +58,7 @@ def password_generator():
     return input_passphrase
 
 
-def encryption_method():
+def get_symmetric_algorithm():
 
     output=subprocess.run(
         ['openssl','enc','-ciphers'],
@@ -82,6 +82,23 @@ def encryption_method():
         password=None
     
     return cipher,password
+
+
+def get_asymmetric_algorithm():
+    cmd=['openssl', 'list', '-public-key-algorithms']
+    output= subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+    algorithms=set()
+    for line in output.stdout.strip().splitlines():
+        match = re.search(r'PEM string:\s*(\S+)', line)
+        if match:
+            algorithms.add(match.group(1))
+
+    algorithms=sorted(algorithms)
+    algorithms_menu=TerminalMenu(algorithms)
+    algorithm_index=algorithms_menu.show()
+    algorithm=algorithms[algorithm_index]
+    return algorithm
+
 
 def welcome(msg):
     

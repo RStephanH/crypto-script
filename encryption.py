@@ -9,20 +9,12 @@ class Cipher():
         self.name=cipher_name
         self.passphrase=passphrase
 
-        # if (self.name == "-aes-256-cbc"
-        #     and self.passphrase== None):
-        #     #Generate the key and the initial vector
-        #     self.option={
-        #         'key':os.urandom(32),
-        #         'iv':os.urandom(16)
-        #     }
-        #
 
 class Encryption():
     """Model of encryption """
     def __init__(self):
         self.concern_file=func.choose_file()
-        self.cipher=Cipher(*func.encryption_method())
+        self.cipher=Cipher(*func.get_symmetric_algorithm())
     
     def encrypt(self):
 
