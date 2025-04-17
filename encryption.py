@@ -13,7 +13,9 @@ class Cipher():
 class Encryption():
     """Model of encryption """
     def __init__(self,type_enc):
+
         self.concern_file=func.choose_file()
+
         #value type_enc= "Symmetric"/"Asymmetric"
         if type_enc.lower()=="symmetric":
             self.cipher=Cipher(*func.get_symmetric_algorithm())
@@ -94,7 +96,69 @@ class Encryption():
         pass
 
     def sym_decrypt(self):
-        
+        print(f"The file to decrypt is {self.concern_file}")
+        if self.cipher.name=="-aes-256-cbc":
+
+            if self.cipher.passphrase is not None:
+                cmd=[
+                    'openssl',
+                    'enc',
+                    '-d',
+                    '-aes-256-cbc',
+                    '-salt',
+                    '-pbkdf2',
+                    '-iter',
+                    '100000',
+                    '-in',
+                    self.concern_file,
+                    '-out',
+                    self.concern_file+".out",
+                    '-k',
+                    self.cipher.passphrase
+                ]
+
+            elif self.cipher.passphrase is None:
+                #Getting the key
+                #Getting the name of the key file
+                key_file_name=func.choose_file("Enter the key file")
+
+                key_size=256
+                key_bin=bytes()
+                #open the key file
+                with open(key_file_name,'rb') as key_file:
+                    while chunk:=key_file.read(key_size):
+                        key_bin += chunk #Assign the contents of the file into key_bin
+                key_hex=key_bin.hex()
+
+                #Getting the IV
+                iv_file_name=func.choose_file("Enter the IV file")
+
+                iv_size=128
+                iv_bin=bytes()
+
+                with open(iv_file_name,'rb') as iv_file:
+                    while chunk_iv:=iv_file.read(key_size):
+                        iv_bin += chunk_iv #Assign the contents of the file into key_bin
+                iv_hex=iv_bin.hex()
+
+                cmd=[
+                    "openssl",
+                    "enc",
+                    "-d",
+                    self.cipher.name,
+                    "-salt", "-in",
+                    self.concern_file,"-out",
+                    self.concern_file+".out",
+                    "-K",
+                    key_hex,
+                    "-iv",
+                    iv_hex
+                ]
+
+        subprocess.run(cmd,check=True)
+
+        print("Decryption ended")
+
 
 
 

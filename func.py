@@ -7,8 +7,7 @@ import subprocess
 
 
 #Chose the file 
-def choose_file():
-    message="Choose the file:"
+def choose_file(message="Choose the file:"):
     
      # Get list of files in the current directory
     all_entries = os.listdir('.')
