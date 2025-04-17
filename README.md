@@ -17,12 +17,17 @@ To run this program, you need to install all dependencies:
    python -m venv .venv
    ```
 
-3. Install the required module from PyPI:
+3. Activate the virtual environment:
+   ```bash
+   source .venv/bin/activate
+   ```
+
+4. Install the required module from PyPI:
    ```bash
    pip install simple-term-menu
    ```
 
-4. Install additional utilities for better output:
+5. Install additional utilities for better output:
    ```bash
    sudo apt install cowsay figlet
    ```
