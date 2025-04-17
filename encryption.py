@@ -1,6 +1,7 @@
 from sys import exit
 import func
 import os
+import re
 import subprocess
 
 class Cipher():
@@ -24,6 +25,9 @@ class Encryption():
     
         #Encrypt
     def sym_encrypt(self):
+        pattern = r"\b\w+-256-cbc\b" #Detect 256 size of key and cbc mode
+        if(bool(re.search(pattern, self.cipher.name, re.IGNORECASE))):
+            print("256-cbc mode detected")
 
         if (self.cipher.name == "-aes-256-cbc"
             and self.cipher.passphrase== None):
