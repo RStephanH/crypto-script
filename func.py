@@ -44,7 +44,6 @@ def check_openSSL():
 
 def password_generator():
     while True:
-
         input_passphrase1=getpass("Enter the passphrase: ")
         input_passphrase2=getpass("Re-enter the passphrase: ")
 
@@ -55,50 +54,15 @@ def password_generator():
         else:
             print("Passwords don't match. Try again.\n")
     return input_passphrase
-
-
-def get_symmetric_algorithm():
-
-    output=subprocess.run(
-        ['openssl','enc','-ciphers'],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
-    ciphers=output.stdout.split()
-
-    for _ in range(2):
-        del ciphers[0]
-    
-    ciphers_menu=TerminalMenu(ciphers,title="Choose the algorithm")
-    cipher_index=ciphers_menu.show()
-    cipher=ciphers[cipher_index]
+def passphrase_generator():
     confirm=str(input("Do you want to use passphrase?(y/n)"))
-
     if confirm.lower()=='y':
         password=password_generator()
     else:
         password=None
-    
-    return cipher,password
 
+    return password
 
-def get_asymmetric_algorithm():
-    cmd=['openssl', 'list', '-public-key-algorithms']
-    output= subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
-    algorithms=set()
-    for line in output.stdout.strip().splitlines():
-        match = re.search(r'PEM string:\s*(\S+)', line)
-        if match:
-            algorithms.add(match.group(1))
-
-    algorithms=sorted(algorithms)
-    algorithms_menu=TerminalMenu(algorithms)
-    algorithm_index=algorithms_menu.show()
-    algorithm=algorithms[algorithm_index]
-
-    private_passphrase=password_generator()
-    return algorithm, private_passphrase
 
 
 def welcome(msg):
@@ -117,17 +81,32 @@ def choose_action():
     cmd=["cowsay","-f","tux",action_msg]
     subprocess.run(cmd,check=True)
 
-    actions=["Encrypt","Decrypt","Cancel"]
+    actions=["Encrypt","Decrypt","Generate key","Hash","Cancel"]
     action_menu=TerminalMenu(actions)
     action_index=action_menu.show()
-    action=actions[action_index]
+    action=actions[action_index].lower()
 
-    if action.lower()=="cancel":
+    if action=="cancel":
         exit(1)
-    types_action=["Symmetric","Asymmetric"]
-    type_menu=TerminalMenu(types_action,title="Which type of encryption ?")
+
+    elif (action=="encrypt" 
+            or action=="decrypt"):
+        types_action=["Symmetric","Asymmetric"]
+
+    elif (action=="generate key"):
+        types_action=["Private key", "Public key"]
+
+    elif (action=="hash"):
+        type_action=None
+        return action, type_action
+
+    else:
+        print("Action Error")
+        exit(1)
+
+    type_menu=TerminalMenu(types_action,title="Which type?")
     type_index=type_menu.show()
-    type_action=types_action[type_index]
+    type_action=types_action[type_index].lower()
 
     return action, type_action
 
