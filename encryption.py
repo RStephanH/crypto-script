@@ -12,11 +12,16 @@ class Cipher():
 
 class Encryption():
     """Model of encryption """
-    def __init__(self):
+    def __init__(self,type_enc):
         self.concern_file=func.choose_file()
-        self.cipher=Cipher(*func.get_symmetric_algorithm())
+        #value type_enc= "Symmetric"/"Asymmetric"
+        if type_enc.lower()=="symmetric":
+            self.cipher=Cipher(*func.get_symmetric_algorithm())
+        elif type_enc.lower()=="asymmetric":
+            self.cipher=Cipher(*func.get_asymmetric_algorithm())
     
-    def encrypt(self):
+        #Encrypt
+    def sym_encrypt(self):
 
         if (self.cipher.name == "-aes-256-cbc"
             and self.cipher.passphrase== None):
@@ -84,10 +89,11 @@ class Encryption():
             print("Error with the passphrase")
             exit(1)
         subprocess.run(cmd,check=True)
+        print("Operation success")
 
         
-    def decrypt(self,key=None,iv=None,passphrase=None):
-
+    def asym_encryp(self):
         pass
+
 
 

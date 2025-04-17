@@ -97,7 +97,9 @@ def get_asymmetric_algorithm():
     algorithms_menu=TerminalMenu(algorithms)
     algorithm_index=algorithms_menu.show()
     algorithm=algorithms[algorithm_index]
-    return algorithm
+
+    private_passphrase=password_generator()
+    return algorithm, private_passphrase
 
 
 def welcome(msg):
