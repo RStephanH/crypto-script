@@ -12,12 +12,17 @@ To run this program, you need to install all dependencies:
    sudo apt install python3 python3-pip
    ```
 
-2. Install the required module from PyPI:
+2. Create a virtual environment:
+   ```bash
+   python -m venv .venv
+   ```
+
+3. Install the required module from PyPI:
    ```bash
    pip install simple-term-menu
    ```
 
-3. Install additional utilities for better output:
+4. Install additional utilities for better output:
    ```bash
    sudo apt install cowsay figlet
    ```
