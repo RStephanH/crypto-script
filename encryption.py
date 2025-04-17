@@ -50,8 +50,6 @@ class Encryption():
             #Translate the binary format into hex
             hex_key=self.key.hex()
             hex_iv=self.iv.hex()
-            print(f"hex_key: {hex_key}\n"
-                f"hex_iv: {hex_iv}")
 
             #Define the encryption command
             cmd=[
@@ -94,6 +92,9 @@ class Encryption():
         
     def asym_encryp(self):
         pass
+
+    def sym_decrypt(self):
+        
 
 
 
