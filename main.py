@@ -6,18 +6,23 @@ func.welcome("Crypto-Script")
 
 #Choosing what kind of operation the user want
 action, type_action=func.choose_action()
-#value action= "Encrypt"/"Decrypt"/"Cancel"
-#value type_action= "Symmetric"/"Asymmetric"
+# value action= "Encrypt"/"Decrypt"/"Generate key"/"Hash"/"Cancel"
 
-file=encryption.Encryption(type_action)
+# value type_action
+#  for Encrypt and Decrypt:
+#    "Symmetric"/"Asymmetric"
+#  for Generate key:
+#    "Private key"/"Public key"
+    
 
-#Encryption
-if action.lower()=="encrypt":
-    if type_action.lower()=="symmetric":
-        file.sym_encrypt()
-    elif type_action.lower()=="asymmetric":
-        file.asym_encryp()
-#Decription
-elif (action.lower()=="decrypt"):
-    if type_action.lower()=="symmetric":
-        file.sym_decrypt()
+if action=='encrypt':
+    pass
+elif action=='decrypt':
+    pass
+elif action=='generate key':
+    if type_action=='private key':
+        encryption.Asymmetric_Encryption.generate_private_key()
+elif action=='hash':
+    pass
+
+
