@@ -16,9 +16,13 @@ action, type_action=func.choose_action()
     
 
 if action=='encrypt':
-    pass
+    if type_action=='asymmetric':
+        file=encryption.Asymmetric_Encryption()
+        file.encrypt()
 elif action=='decrypt':
-    pass
+    if type_action=='asymmetric':
+        file=encryption.Asymmetric_Encryption()
+        file.decrypt()
 elif action=='generate key':
     if type_action=='private key':
         encryption.Asymmetric_Encryption.generate_private_key()
@@ -27,6 +31,10 @@ elif action=='generate key':
     elif type_action=='encrypt private key':
         encryption.Asymmetric_Encryption.encrypt_private_key()
 elif action=='hash':
-    pass
-
+    if type_action=='create':
+        file=encryption.Hash()
+        file.create_hash()
+    elif type_action=='sign':
+        file=encryption.Hash()
+        file.sign_hash()
 

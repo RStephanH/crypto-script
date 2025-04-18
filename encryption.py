@@ -18,7 +18,7 @@ class Encryption():
     def asym_decrypt(self,prv_key):
         pass
 
-class Hash():
+class Hash(Encryption):
     @classmethod
     def get_hash_algorithm(cls):
         cmd=[
@@ -37,20 +37,39 @@ class Hash():
         algorithm_index=menu_algorithm.show()
         return outputs[algorithm_index]
 
-    def __init__(self,algo,file):
-        self.algorithm=algo
-        self.file=file
+    def __init__(self):
+        super().__init__()
+        self.algorithm=Hash.get_hash_algorithm()
+
     def create_hash(self):
         cmd=[
             "openssl",
             "dgst",
-            self.algorithm,
-            "-in",
-            self.file,
+            "-"+self.algorithm,
             "-out",
-            self.file+".hash"
+            self.concern_file+".hash",
+            self.concern_file,
         ]
         subprocess.run(cmd,check=True)
+
+        return True
+
+    def sign_hash(self):
+        private_key=func.choose_file("Enter the private key:")
+        cmd=[
+            'openssl',
+            'dgst',
+            '-'+self.algorithm,
+            '-sign',
+            private_key,
+            '-out',
+            'signature.bin',
+            self.concern_file,
+        ]
+        subprocess.run(cmd,check=True)
+
+        return True
+
 
 class Symmetric_Encryption(Encryption):
     def __init__(self):
@@ -250,8 +269,8 @@ class Asymmetric_Encryption(Encryption):
     def __init__(self):
         super().__init__()
         self.cipher=Asymmetric_Encryption.get_asymmetric_algorithm()
-        self.name_private_key=func.choose_file()
-        self.name_public_key=func.choose_file()
+        self.name_private_key=func.choose_file("Enter the private key")
+        self.name_public_key=func.choose_file("Enter the public key")
 
     @classmethod
     def get_asymmetric_algorithm(cls):
