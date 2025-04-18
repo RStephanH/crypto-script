@@ -37,4 +37,7 @@ elif action=='hash':
     elif type_action=='sign':
         file=encryption.Hash()
         file.sign_hash()
+    elif type_action=='verify':
+        file=encryption.Hash()
+        file.verify_hash()
 

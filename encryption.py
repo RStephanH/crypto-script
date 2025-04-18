@@ -70,6 +70,23 @@ class Hash(Encryption):
 
         return True
 
+    def verify_hash(self):
+        public_key=func.choose_file("Enter the public key:")
+        signature=func.choose_file("Enter the signature:")
+        cmd=[
+            'openssl',
+            'dgst',
+            '-'+self.algorithm,
+            '-verify',
+            public_key,
+            '-signature',
+            signature,
+            self.concern_file,
+        ]
+        subprocess.run(cmd,check=True)
+
+        return True
+
 
 class Symmetric_Encryption(Encryption):
     def __init__(self):
