@@ -318,7 +318,9 @@ class Asymmetric_Encryption(Encryption):
 
             return True
         elif algo in ["DH"]:
-            print("This is a Diffie-Hellman key (key exchange only).")
+            print(
+                "This is a Diffie-Hellman key (key exchange only)."
+            )
             # Step 1: Generate parameters 
             cmd1=[
                 'openssl',
@@ -347,19 +349,25 @@ class Asymmetric_Encryption(Encryption):
             return True
 
         elif algo in ["EC"]:
-            print("This is an Elliptic Curve key (signing + key exchange).")
+            print(
+                "This is an Elliptic Curve key (signing + key exchange)."
+            )
+            return True
 
         elif algo in ["ED25519", "ED448"]:
-            print("This is an Edwards-curve key (signing only).")
+            print(
+                "This is an Edwards-curve key (signing only)."
+            )
+            return True
         elif algo in ["X25519", "X448"]:
-            print("This is an X25519/X448 key (key exchange only).")
+            print(
+                "This is an X25519/X448 key (key exchange only)."
+            )
+            return True
         else:
             print("Unknown algorithm:", algo)
-        cmd=[
+            return False
 
-            'openssl',
-
-        ]
 
     def encrypt(self):
         cmd=[
@@ -375,6 +383,62 @@ class Asymmetric_Encryption(Encryption):
             self.concern_file+".enc"
         ]
         subprocess.run(cmd,check=True)
+
+    @classmethod
+    def generate_public_key(cls):
+        private_key=func.choose_file(
+            "Enter the private key:"
+        )
+        cmd=[
+            'openssl',
+            'pkey',
+            '-in',
+            private_key,
+            '-pubout',
+            '-out',
+            'public.pem'
+        ]
+        subprocess.run(cmd,check=True)
+
+        return True
+    @classmethod
+    def encrypt_private_key(cls):
+        private_key=func.choose_file(
+            "Enter the private key:"
+        )
+        algos=["aes","des3"]
+        algo_menu=TerminalMenu(algos,title="Choose the algorithm")
+        algo_index=algo_menu.show()
+        algo=algos[algo_index]
+        if algo=="aes":
+            print(private_key,algo)
+            cmd=[
+                'openssl',
+                'pkcs8',
+                '-topk8',
+                '-in',
+                private_key,
+                '-out',
+                'encryptedkey.pem',
+                '-v2',
+                'aes-256-cbc'
+            ]
+        else:
+            cmd=[
+                'openssl',
+                'pkcs8',
+                '-topk8',
+                '-in',
+                private_key,
+                '-out',
+                'encryptedkey.pem',
+                '-v1',
+                'PBE-SHA1-3DES'
+
+            ]
+        subprocess.run(cmd,check=True)
+        return True
+
 
     def decrypt(self):
         cmd=[

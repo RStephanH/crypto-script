@@ -94,7 +94,7 @@ def choose_action():
         types_action=["Symmetric","Asymmetric"]
 
     elif (action=="generate key"):
-        types_action=["Private key", "Public key"]
+        types_action=["Private key", "Public key","Encrypt private key"]
 
     elif (action=="hash"):
         type_action=None

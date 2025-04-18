@@ -22,6 +22,10 @@ elif action=='decrypt':
 elif action=='generate key':
     if type_action=='private key':
         encryption.Asymmetric_Encryption.generate_private_key()
+    elif type_action=='public key':
+        encryption.Asymmetric_Encryption.generate_public_key()
+    elif type_action=='encrypt private key':
+        encryption.Asymmetric_Encryption.encrypt_private_key()
 elif action=='hash':
     pass
 
