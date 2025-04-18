@@ -19,9 +19,15 @@ if action=='encrypt':
     if type_action=='asymmetric':
         file=encryption.Asymmetric_Encryption()
         file.encrypt()
+    elif type_action=='symmetric':
+        file=encryption.Symmetric_Encryption()
+        file.encrypt()
 elif action=='decrypt':
     if type_action=='asymmetric':
         file=encryption.Asymmetric_Encryption()
+        file.decrypt()
+    elif type_action=='symmetric':
+        file=encryption.Symmetric_Encryption()
         file.decrypt()
 elif action=='generate key':
     if type_action=='private key':
