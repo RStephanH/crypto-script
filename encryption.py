@@ -18,7 +18,7 @@ class Encryption():
     def asym_decrypt(self,prv_key):
         pass
 
-class Hash():
+class Hash(Encryption):
     @classmethod
     def get_hash_algorithm(cls):
         cmd=[
@@ -37,20 +37,56 @@ class Hash():
         algorithm_index=menu_algorithm.show()
         return outputs[algorithm_index]
 
-    def __init__(self,algo,file):
-        self.algorithm=algo
-        self.file=file
+    def __init__(self):
+        super().__init__()
+        self.algorithm=Hash.get_hash_algorithm()
+
     def create_hash(self):
         cmd=[
             "openssl",
             "dgst",
-            self.algorithm,
-            "-in",
-            self.file,
+            "-"+self.algorithm,
             "-out",
-            self.file+".hash"
+            self.concern_file+".hash",
+            self.concern_file,
         ]
         subprocess.run(cmd,check=True)
+
+        return True
+
+    def sign_hash(self):
+        private_key=func.choose_file("Enter the private key:")
+        cmd=[
+            'openssl',
+            'dgst',
+            '-'+self.algorithm,
+            '-sign',
+            private_key,
+            '-out',
+            'signature.bin',
+            self.concern_file,
+        ]
+        subprocess.run(cmd,check=True)
+
+        return True
+
+    def verify_hash(self):
+        public_key=func.choose_file("Enter the public key:")
+        signature=func.choose_file("Enter the signature:")
+        cmd=[
+            'openssl',
+            'dgst',
+            '-'+self.algorithm,
+            '-verify',
+            public_key,
+            '-signature',
+            signature,
+            self.concern_file,
+        ]
+        subprocess.run(cmd,check=True)
+
+        return True
+
 
 class Symmetric_Encryption(Encryption):
     def __init__(self):
@@ -250,8 +286,8 @@ class Asymmetric_Encryption(Encryption):
     def __init__(self):
         super().__init__()
         self.cipher=Asymmetric_Encryption.get_asymmetric_algorithm()
-        self.name_private_key=func.choose_file()
-        self.name_public_key=func.choose_file()
+        self.name_private_key=func.choose_file("Enter the private key")
+        self.name_public_key=func.choose_file("Enter the public key")
 
     @classmethod
     def get_asymmetric_algorithm(cls):
@@ -318,7 +354,9 @@ class Asymmetric_Encryption(Encryption):
 
             return True
         elif algo in ["DH"]:
-            print("This is a Diffie-Hellman key (key exchange only).")
+            print(
+                "This is a Diffie-Hellman key (key exchange only)."
+            )
             # Step 1: Generate parameters 
             cmd1=[
                 'openssl',
@@ -347,19 +385,25 @@ class Asymmetric_Encryption(Encryption):
             return True
 
         elif algo in ["EC"]:
-            print("This is an Elliptic Curve key (signing + key exchange).")
+            print(
+                "This is an Elliptic Curve key (signing + key exchange)."
+            )
+            return True
 
         elif algo in ["ED25519", "ED448"]:
-            print("This is an Edwards-curve key (signing only).")
+            print(
+                "This is an Edwards-curve key (signing only)."
+            )
+            return True
         elif algo in ["X25519", "X448"]:
-            print("This is an X25519/X448 key (key exchange only).")
+            print(
+                "This is an X25519/X448 key (key exchange only)."
+            )
+            return True
         else:
             print("Unknown algorithm:", algo)
-        cmd=[
+            return False
 
-            'openssl',
-
-        ]
 
     def encrypt(self):
         cmd=[
@@ -375,6 +419,62 @@ class Asymmetric_Encryption(Encryption):
             self.concern_file+".enc"
         ]
         subprocess.run(cmd,check=True)
+
+    @classmethod
+    def generate_public_key(cls):
+        private_key=func.choose_file(
+            "Enter the private key:"
+        )
+        cmd=[
+            'openssl',
+            'pkey',
+            '-in',
+            private_key,
+            '-pubout',
+            '-out',
+            'public.pem'
+        ]
+        subprocess.run(cmd,check=True)
+
+        return True
+    @classmethod
+    def encrypt_private_key(cls):
+        private_key=func.choose_file(
+            "Enter the private key:"
+        )
+        algos=["aes","des3"]
+        algo_menu=TerminalMenu(algos,title="Choose the algorithm")
+        algo_index=algo_menu.show()
+        algo=algos[algo_index]
+        if algo=="aes":
+            print(private_key,algo)
+            cmd=[
+                'openssl',
+                'pkcs8',
+                '-topk8',
+                '-in',
+                private_key,
+                '-out',
+                'encryptedkey.pem',
+                '-v2',
+                'aes-256-cbc'
+            ]
+        else:
+            cmd=[
+                'openssl',
+                'pkcs8',
+                '-topk8',
+                '-in',
+                private_key,
+                '-out',
+                'encryptedkey.pem',
+                '-v1',
+                'PBE-SHA1-3DES'
+
+            ]
+        subprocess.run(cmd,check=True)
+        return True
+
 
     def decrypt(self):
         cmd=[
