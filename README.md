@@ -64,4 +64,5 @@ To run this program, you need to install all dependencies:
 
 ## *CRYPTO-SCRIPT*
 
-![[firstview.png]]
+<!-- ![[firstview.png]] -->
+![alt text](./assets/images/firstview.png)
