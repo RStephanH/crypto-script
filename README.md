@@ -62,3 +62,6 @@ To run this program, you need to install all dependencies:
    python3 main.py
    ```
 
+## *CRYPTO-SCRIPT*
+
+![[firstview.png]]
