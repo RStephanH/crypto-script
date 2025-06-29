@@ -1,68 +1,68 @@
-# crypto-script
-A script for performing encryption operations using the OpenSSL command.
+#  crypto-script
 
-## For Linux
+A terminal-based Python script for performing encryption operations using the `openssl` command-line tool. The interface relies on `figlet` and `cowsay` for output formatting, and `simple-term-menu` for interactive selection.
 
-To run this program, you need to install all dependencies:
+---
 
-### Debian-based Systems
+## Installation (Linux)
 
-1. Install Python and pip:
-   ```bash
-   sudo apt install python3 python3-pip
-   ```
+### 1. Clone the Repository
 
-2. Create a virtual environment:
-   ```bash
-   python -m venv .venv
-   ```
+```bash
+git clone https://github.com/RStephanH/crypto-script.git
+cd crypto-script
+````
 
-3. Activate the virtual environment:
-   ```bash
-   source .venv/bin/activate
-   ```
+### 2. Install `uv` (a fast alternative to pip & venv)
 
-4. Install the required module from PyPI:
-   ```bash
-   pip install simple-term-menu
-   ```
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-5. Install additional utilities for better output:
-   ```bash
-   sudo apt install cowsay figlet
-   ```
+### 3. Create and Activate the Virtual Environment
 
-### Arch-based Systems
+```bash
+uv venv --python 3.11 .venv
+source .venv/bin/activate
+```
 
-1. Install Python and pip:
-   ```bash
-   sudo pacman -S python python-pip
-   ```
+### 4. Install Python Dependencies
 
-2. Install the required module using `yay`:
-   ```bash
-   yay -S python-simple-term-menu
-   ```
+```bash
+uv pip install -r requirements.txt
+```
 
-3. Install additional utilities for better output:
-   ```bash
-   sudo pacman -S cowsay figlet
-   ```
+### 5. Install Required System Packages
 
-## Usage
+These utilities are **essential** for displaying the script's output:
 
-1. Clone the repository:
-   ```bash
-   git clone https://www.github.com/RStephanH/crypto-script.git
-   cd crypto-script
-   ```
+#### Debian/Ubuntu:
 
-2. Run the script:
-   ```bash
-   python3 main.py
-   ```
+```bash
+sudo apt install figlet cowsay
+```
 
-## *CRYPTO-SCRIPT*
+#### Arch Linux:
 
-<!-- ![[firstview.png]] -->
-![alt text](./assets/images/firstview.png)
+```bash
+sudo pacman -S figlet cowsay
+```
+
+---
+
+##  Usage
+
+Once all dependencies are installed, run the script from the project root:
+
+```bash
+uv run main.py
+```
+
+---
+
+##  Preview
+
+![crypto-script UI](./assets/images/firstview.png)
+
+---
+
