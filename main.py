@@ -1,5 +1,5 @@
-import encryption
-import func
+import utils.encryption as encryption
+import utils.func as func
 
 #Welcome
 func.welcome("Crypto-Script")

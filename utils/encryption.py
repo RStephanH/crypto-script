@@ -1,6 +1,7 @@
 from sys import exit
 from simple_term_menu import TerminalMenu
-import func
+from .func import choose_file
+from .func import passphrase_generator
 import os
 import re
 import subprocess
@@ -10,7 +11,7 @@ import subprocess
 class Encryption():
     """Model of encryption """
     def __init__(self):
-        self.concern_file=func.choose_file()
+        self.concern_file=choose_file()
 
     def asym_encryp(self):
         pass
@@ -55,7 +56,7 @@ class Hash(Encryption):
         return True
 
     def sign_hash(self):
-        private_key=func.choose_file("Enter the private key:")
+        private_key=choose_file("Enter the private key:")
         cmd=[
             'openssl',
             'dgst',
@@ -71,8 +72,8 @@ class Hash(Encryption):
         return True
 
     def verify_hash(self):
-        public_key=func.choose_file("Enter the public key:")
-        signature=func.choose_file("Enter the signature:")
+        public_key=choose_file("Enter the public key:")
+        signature=choose_file("Enter the signature:")
         cmd=[
             'openssl',
             'dgst',
@@ -92,7 +93,7 @@ class Symmetric_Encryption(Encryption):
     def __init__(self):
         super().__init__()
         self.cipher=Symmetric_Encryption.get_symmetric_algorithm()
-        self.passphrase=func.passphrase_generator()
+        self.passphrase=passphrase_generator()
         self.mode=Symmetric_Encryption.detect_mode(self.cipher)
 
     @classmethod
@@ -242,7 +243,7 @@ class Symmetric_Encryption(Encryption):
         elif self.passphrase is None:
             #Getting the key
             #Getting the name of the key file
-            key_file_name=func.choose_file("Enter the key file")
+            key_file_name=choose_file("Enter the key file")
 
             key_size=256
             key_bin=bytes()
@@ -253,7 +254,7 @@ class Symmetric_Encryption(Encryption):
             key_hex=key_bin.hex()
 
             #Getting the IV
-            iv_file_name=func.choose_file("Enter the IV file")
+            iv_file_name=choose_file("Enter the IV file")
 
             iv_size=128
             iv_bin=bytes()
@@ -286,8 +287,8 @@ class Asymmetric_Encryption(Encryption):
     def __init__(self):
         super().__init__()
         self.cipher=Asymmetric_Encryption.get_asymmetric_algorithm()
-        self.name_private_key=func.choose_file("Enter the private key")
-        self.name_public_key=func.choose_file("Enter the public key")
+        self.name_private_key=choose_file("Enter the private key")
+        self.name_public_key=choose_file("Enter the public key")
 
     @classmethod
     def get_asymmetric_algorithm(cls):
@@ -422,7 +423,7 @@ class Asymmetric_Encryption(Encryption):
 
     @classmethod
     def generate_public_key(cls):
-        private_key=func.choose_file(
+        private_key=choose_file(
             "Enter the private key:"
         )
         cmd=[
@@ -439,7 +440,7 @@ class Asymmetric_Encryption(Encryption):
         return True
     @classmethod
     def encrypt_private_key(cls):
-        private_key=func.choose_file(
+        private_key=choose_file(
             "Enter the private key:"
         )
         algos=["aes","des3"]
