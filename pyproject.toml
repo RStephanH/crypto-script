@@ -1,0 +1,16 @@
+[project]
+name = "crypto-script"
+version = "0.2.0"
+dependencies = ["simple-term-menu>=1.6",]
+
+[project.optional-dependencies]
+dev = [
+  "ruff",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+crypto-script = "cryptoscript.cli:main"
